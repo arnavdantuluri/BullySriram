@@ -385,14 +385,6 @@ game.onUpdate(function () {
                     }
                 }
             }
-        } else if (controller.B.isPressed() == true) {
-        	
-        } else if (controller.down.isPressed() == true && Player_1.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
-            Player_1.setImage(assets.image`Downward Strike Sprite Image`)
-            controller.moveSprite(Player_1, 0, 0)
-            downdash = true
-            dashing = true
-            Player_1.setVelocity(0, 400)
         } else if (lastdirection == true) {
             if (attacking == false) {
                 if (dashing == false) {
@@ -422,16 +414,6 @@ game.onUpdate(function () {
             }
         } else {
         	
-        }
-        if (controller.A.isPressed() == true) {
-            if (Screen == 1) {
-                Screen += 1
-                scene.cameraShake(4, 500)
-            } else if (Dash_Unlocked == true) {
-                timer.throttle("dash", 500, function () {
-                    dash()
-                })
-            }
         }
     }
     if (dashing == true) {
@@ -533,13 +515,31 @@ game.onUpdate(function () {
 game.onUpdate(function () {
     if (Cutscene == false) {
         if (controller.down.isPressed() == true && Player_1.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
-        	
+            Player_1.setImage(assets.image`Downward Strike Sprite Image`)
+            controller.moveSprite(Player_1, 0, 0)
+            downdash = true
+            dashing = true
+            Player_1.setVelocity(0, 400)
+        }
+    }
+})
+game.onUpdate(function () {
+    if (Cutscene == false) {
+        if (controller.A.isPressed() == true) {
+            if (Screen == 1) {
+                Screen += 1
+                scene.cameraShake(4, 500)
+            } else if (Dash_Unlocked == true) {
+                timer.throttle("dash", 500, function () {
+                    dash()
+                })
+            }
         }
     }
 })
 game.onUpdateInterval(randint(750, 1250), function () {
     for (let value3 of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (randint(5, 6) != 6) {
+        if (randint(1, 5) != 5) {
             if (Playerwamoushindeiru == false) {
                 if (enemywamoushindeiru == false) {
                     if (Player_1.tilemapLocation().column > value3.tilemapLocation().column) {

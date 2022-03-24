@@ -295,6 +295,7 @@ weapons_list = [
 "excaliber"
 ]
 current_weapon = weapons_list[1]
+let stompunlocked = false
 Reload_Time = 1000
 Cutscene = true
 Screen = 1
@@ -458,6 +459,19 @@ game.onUpdate(function () {
     }
 })
 game.onUpdate(function () {
+    if (stompunlocked == true) {
+        if (Cutscene == false) {
+            if (controller.down.isPressed() == true && Player_1.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
+                Player_1.setImage(assets.image`Downward Strike Sprite Image`)
+                controller.moveSprite(Player_1, 0, 0)
+                downdash = true
+                dashing = true
+                Player_1.setVelocity(0, 400)
+            }
+        }
+    }
+})
+game.onUpdate(function () {
     if (Cutscene == false) {
         if (controller.B.isPressed() == true) {
             timer.throttle("attack", Reload_Time, function () {
@@ -507,17 +521,6 @@ game.onUpdate(function () {
                     })
                 }
             })
-        }
-    }
-})
-game.onUpdate(function () {
-    if (Cutscene == false) {
-        if (controller.down.isPressed() == true && Player_1.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
-            Player_1.setImage(assets.image`Downward Strike Sprite Image`)
-            controller.moveSprite(Player_1, 0, 0)
-            downdash = true
-            dashing = true
-            Player_1.setVelocity(0, 400)
         }
     }
 })

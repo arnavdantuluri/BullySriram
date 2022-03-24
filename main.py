@@ -560,6 +560,22 @@ def on_on_update2():
 game.on_update(on_on_update2)
 
 def on_on_update3():
+    global downdash, dashing
+    if Cutscene == False:
+        if controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
+            assets.tile("""
+                transparency16
+            """)):
+            Player_1.set_image(assets.image("""
+                Downward Strike Sprite Image
+            """))
+            controller.move_sprite(Player_1, 0, 0)
+            downdash = True
+            dashing = True
+            Player_1.set_velocity(0, 400)
+game.on_update(on_on_update3)
+
+def on_on_update4():
     if Cutscene == False:
         if controller.B.is_pressed() == True:
             
@@ -577,6 +593,12 @@ def on_on_update3():
                     
                     def on_after24():
                         global Cutscene
+                        animation.run_image_animation(Player_1,
+                            assets.animation("""
+                                Run forward animation
+                            """),
+                            75,
+                            True)
                         Cutscene = False
                     timer.after(300, on_after24)
                     
@@ -587,6 +609,7 @@ def on_on_update3():
                         attacking = False
                     timer.after(1000, on_after25)
                     
+                    controller.move_sprite(Player_1, 75, 0)
                 else:
                     Cutscene = True
                     animation.run_image_animation(Player_1,
@@ -598,6 +621,12 @@ def on_on_update3():
                     
                     def on_after26():
                         global Cutscene
+                        animation.run_image_animation(Player_1,
+                            assets.animation("""
+                                Run Backward animation
+                            """),
+                            75,
+                            True)
                         Cutscene = False
                     timer.after(300, on_after26)
                     
@@ -610,22 +639,6 @@ def on_on_update3():
                     
             timer.throttle("attack", Reload_Time, on_throttle3)
             
-game.on_update(on_on_update3)
-
-def on_on_update4():
-    global downdash, dashing
-    if Cutscene == False:
-        if controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
-            assets.tile("""
-                transparency16
-            """)):
-            Player_1.set_image(assets.image("""
-                Downward Strike Sprite Image
-            """))
-            controller.move_sprite(Player_1, 0, 0)
-            downdash = True
-            dashing = True
-            Player_1.set_velocity(0, 400)
 game.on_update(on_on_update4)
 
 def on_on_update5():

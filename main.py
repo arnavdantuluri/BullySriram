@@ -447,7 +447,7 @@ if Screen == 2:
     controller.move_sprite(Player_1, 75, 0)
 
 def on_on_update():
-    global playerisfacingright, playerstill, lastdirection, downdash, dashing, Screen
+    global playerisfacingright, playerstill, lastdirection
     if Cutscene == False:
         if Player_1.vx < 0:
             playerisfacingright = False
@@ -487,81 +487,6 @@ def on_on_update():
                                 True)
                         timer.throttle("move", 300, on_throttle2)
                         
-        elif controller.B.is_pressed() == True:
-            
-            def on_throttle3():
-                global attacking
-                attacking = True
-                if lastdirection == True:
-                    animation.run_image_animation(Player_1,
-                        assets.animation("""
-                            Attack Common Sword Right
-                        """),
-                        100,
-                        False)
-                    attack()
-                    
-                    def on_after24():
-                        Player_1.set_image(img("""
-                            . . . . . . f f f f f f . . . . 
-                                                        . . . . f f e e e e f 2 f . . . 
-                                                        . . . f f e e e e f 2 2 2 f . . 
-                                                        . . . f e e e f f e e e e f . . 
-                                                        . . . f f f f e e 2 2 2 2 e f . 
-                                                        . . . f e 2 2 2 f f f f e 2 f . 
-                                                        . . f f f f f f f e e e f f f . 
-                                                        . . f f e 4 4 e b f 4 4 e e f . 
-                                                        . . f e e 4 d 4 1 f d d e f . . 
-                                                        . . . f e e e 4 d d d d f . . . 
-                                                        . . . . f f e e 4 4 4 e f . . . 
-                                                        . . . . . 4 d d e 2 2 2 f . . . 
-                                                        . . . . . e d d e 2 2 2 f . . . 
-                                                        . . . . . f e e f 4 5 5 f . . . 
-                                                        . . . . . . f f f f f f . . . . 
-                                                        . . . . . . . f f f . . . . . .
-                        """))
-                    timer.after(300, on_after24)
-                    
-                    
-                    def on_after25():
-                        global attacking
-                        attacking = False
-                    timer.after(1000, on_after25)
-                    
-                else:
-                    animation.run_image_animation(Player_1,
-                        assets.animation("""
-                            Attack Common Sword Left
-                        """),
-                        100,
-                        False)
-                    attack()
-                    
-                    def on_after26():
-                        Player_1.set_image(assets.image("""
-                            Player facing backward
-                        """))
-                    timer.after(300, on_after26)
-                    
-                    
-                    def on_after27():
-                        global attacking
-                        attacking = False
-                    timer.after(1000, on_after27)
-                    
-            timer.throttle("attack", Reload_Time, on_throttle3)
-            
-        elif controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
-            assets.tile("""
-                transparency16
-            """)):
-            Player_1.set_image(assets.image("""
-                Downward Strike Sprite Image
-            """))
-            controller.move_sprite(Player_1, 0, 0)
-            downdash = True
-            dashing = True
-            Player_1.set_velocity(0, 200)
         elif lastdirection == True:
             if attacking == False:
                 if dashing == False:
@@ -590,16 +515,6 @@ def on_on_update():
                 """))
         else:
             pass
-        if controller.A.is_pressed() == True:
-            if Screen == 1:
-                Screen += 1
-                scene.camera_shake(4, 500)
-            elif Dash_Unlocked == True:
-                
-                def on_throttle4():
-                    dash()
-                timer.throttle("dash", 500, on_throttle4)
-                
     if dashing == True:
         if downdash == False:
             if lastdirection == True:
@@ -613,11 +528,12 @@ def on_on_update():
 game.on_update(on_on_update)
 
 def on_on_update2():
-    global dashing
+    global dashing, downdash
     if downdash:
         if Player_1.is_hitting_tile(CollisionDirection.BOTTOM):
             dashing = False
             controller.move_sprite(Player_1, 75, 0)
+            downdash = False
             if lastdirection == True:
                 Player_1.set_image(img("""
                     . . . . . . f f f f f f . . . . 
@@ -643,9 +559,93 @@ def on_on_update2():
                 """))
 game.on_update(on_on_update2)
 
+def on_on_update3():
+    if Cutscene == False:
+        if controller.B.is_pressed() == True:
+            
+            def on_throttle3():
+                global attacking, Cutscene
+                attacking = True
+                if lastdirection == True:
+                    Cutscene = True
+                    animation.run_image_animation(Player_1,
+                        assets.animation("""
+                            Attack Common Sword Right
+                        """),
+                        100,
+                        False)
+                    
+                    def on_after24():
+                        global Cutscene
+                        Cutscene = False
+                    timer.after(300, on_after24)
+                    
+                    attack()
+                    
+                    def on_after25():
+                        global attacking
+                        attacking = False
+                    timer.after(1000, on_after25)
+                    
+                else:
+                    Cutscene = True
+                    animation.run_image_animation(Player_1,
+                        assets.animation("""
+                            Attack Common Sword Left
+                        """),
+                        100,
+                        False)
+                    
+                    def on_after26():
+                        global Cutscene
+                        Cutscene = False
+                    timer.after(300, on_after26)
+                    
+                    attack()
+                    
+                    def on_after27():
+                        global attacking
+                        attacking = False
+                    timer.after(1000, on_after27)
+                    
+            timer.throttle("attack", Reload_Time, on_throttle3)
+            
+game.on_update(on_on_update3)
+
+def on_on_update4():
+    global downdash, dashing
+    if Cutscene == False:
+        if controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
+            assets.tile("""
+                transparency16
+            """)):
+            Player_1.set_image(assets.image("""
+                Downward Strike Sprite Image
+            """))
+            controller.move_sprite(Player_1, 0, 0)
+            downdash = True
+            dashing = True
+            Player_1.set_velocity(0, 400)
+game.on_update(on_on_update4)
+
+def on_on_update5():
+    global Screen
+    if Cutscene == False:
+        if controller.A.is_pressed() == True:
+            if Screen == 1:
+                Screen += 1
+                scene.camera_shake(4, 500)
+            elif Dash_Unlocked == True:
+                
+                def on_throttle4():
+                    dash()
+                timer.throttle("dash", 500, on_throttle4)
+                
+game.on_update(on_on_update5)
+
 def on_update_interval():
     for value3 in sprites.all_of_kind(SpriteKind.enemy):
-        if randint(5, 6) != 6:
+        if randint(1, 3) != 3:
             if Playerwamoushindeiru == False:
                 if enemywamoushindeiru == False:
                     if Player_1.tilemap_location().column > value3.tilemap_location().column:

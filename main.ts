@@ -463,47 +463,45 @@ game.onUpdate(function () {
             timer.throttle("attack", Reload_Time, function () {
                 attacking = true
                 if (lastdirection == true) {
+                    Cutscene = true
                     animation.runImageAnimation(
                     Player_1,
                     assets.animation`Attack Common Sword Right`,
                     100,
                     false
                     )
-                    attack()
                     timer.after(300, function () {
-                        Player_1.setImage(img`
-                            . . . . . . f f f f f f . . . . 
-                            . . . . f f e e e e f 2 f . . . 
-                            . . . f f e e e e f 2 2 2 f . . 
-                            . . . f e e e f f e e e e f . . 
-                            . . . f f f f e e 2 2 2 2 e f . 
-                            . . . f e 2 2 2 f f f f e 2 f . 
-                            . . f f f f f f f e e e f f f . 
-                            . . f f e 4 4 e b f 4 4 e e f . 
-                            . . f e e 4 d 4 1 f d d e f . . 
-                            . . . f e e e 4 d d d d f . . . 
-                            . . . . f f e e 4 4 4 e f . . . 
-                            . . . . . 4 d d e 2 2 2 f . . . 
-                            . . . . . e d d e 2 2 2 f . . . 
-                            . . . . . f e e f 4 5 5 f . . . 
-                            . . . . . . f f f f f f . . . . 
-                            . . . . . . . f f f . . . . . . 
-                            `)
+                        animation.runImageAnimation(
+                        Player_1,
+                        assets.animation`Run forward animation`,
+                        75,
+                        true
+                        )
+                        Cutscene = false
                     })
+                    attack()
                     timer.after(1000, function () {
                         attacking = false
                     })
+                    controller.moveSprite(Player_1, 75, 0)
                 } else {
+                    Cutscene = true
                     animation.runImageAnimation(
                     Player_1,
                     assets.animation`Attack Common Sword Left`,
                     100,
                     false
                     )
-                    attack()
                     timer.after(300, function () {
-                        Player_1.setImage(assets.image`Player facing backward`)
+                        animation.runImageAnimation(
+                        Player_1,
+                        assets.animation`Run Backward animation`,
+                        75,
+                        true
+                        )
+                        Cutscene = false
                     })
+                    attack()
                     timer.after(1000, function () {
                         attacking = false
                     })
@@ -539,7 +537,7 @@ game.onUpdate(function () {
 })
 game.onUpdateInterval(randint(750, 1250), function () {
     for (let value3 of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (randint(1, 5) != 5) {
+        if (randint(1, 3) != 3) {
             if (Playerwamoushindeiru == false) {
                 if (enemywamoushindeiru == false) {
                     if (Player_1.tilemapLocation().column > value3.tilemapLocation().column) {

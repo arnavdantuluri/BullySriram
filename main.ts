@@ -56,17 +56,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.DashOrb, function (sprite2, othe
     GainDash()
     otherSprite.destroy()
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.End_Portal, function (sprite, otherSprite) {
-    animation.runImageAnimation(
-    otherSprite,
-    assets.animation`Portal open`,
-    50,
-    true
-    )
-    timer.after(300, function () {
-        game.over(true)
-    })
-})
 function SpawnEnemies () {
     for (let value of tiles.getTilesByType(assets.tile`Spawn Tile`)) {
         Sriram = sprites.create(assets.image`Monkey Facing Right`, SpriteKind.Enemy)
@@ -227,7 +216,7 @@ function attack () {
     shot.setFlag(SpriteFlag.AutoDestroy, true)
     shot.setPosition(Player_1.x, Player_1.y)
 }
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Chest, function (sprite3, otherSprite2) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Chest, function (sprite34, otherSprite24) {
     animation.runImageAnimation(
     Chest_sprite,
     assets.animation`Chest Animation`,
@@ -237,7 +226,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Chest, function (sprite3, otherS
     Cutscene = true
     controller.moveSprite(Player_1, 0, 0)
     setplayerdirection()
-    story.printText("New Weapon Unlocked:    Rapier", sprite3.x, sprite3.y - 30)
+    story.printText("New Weapon Unlocked:    Rapier", sprite34.x, sprite34.y - 30)
     current_weapon = weapons_list[2]
     Cutscene = false
     controller.moveSprite(Player_1, 75, 0)
@@ -267,6 +256,19 @@ function EnemyShot (Enemy_shooter: Sprite) {
         }
     }
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.End_Portal, function (sprite3, otherSprite2) {
+    animation.runImageAnimation(
+    otherSprite2,
+    assets.animation`Portal open`,
+    75,
+    false
+    )
+    pause(400)
+    game.over(true)
+    timer.after(350, function () {
+    	
+    })
+})
 let downdash = false
 let attacking = false
 let playerstill = false
@@ -278,7 +280,7 @@ let playerisfacingright = false
 let Playerwamoushindeiru = false
 let Player_1: Sprite = null
 let Chest_sprite: Sprite = null
-let End_Portal: Sprite = null
+let End_Portal2: Sprite = null
 let Dash_Orb: Sprite = null
 let lastdirection = false
 let Dash_Unlocked = false
@@ -295,7 +297,6 @@ weapons_list = [
 "excaliber"
 ]
 current_weapon = weapons_list[1]
-let stompunlocked = false
 Reload_Time = 1000
 Cutscene = true
 Screen = 1
@@ -310,9 +311,9 @@ if (Screen == 2) {
     scene.setBackgroundImage(assets.image`Level 1 Background`)
     tiles.setCurrentTilemap(tilemap`level1 tilemap`)
     Dash_Orb = sprites.create(assets.image`Dash Orb`, SpriteKind.DashOrb)
-    End_Portal = sprites.create(assets.image`End Portal Sprite`, SpriteKind.End_Portal)
+    End_Portal2 = sprites.create(assets.image`End Portal Sprite`, SpriteKind.End_Portal)
     Chest_sprite = sprites.create(assets.image`Closed Chest`, SpriteKind.Chest)
-    tiles.placeOnTile(End_Portal, tiles.getTileLocation(49, 4))
+    tiles.placeOnTile(End_Portal2, tiles.getTileLocation(49, 4))
     tiles.placeOnTile(Chest_sprite, tiles.getTileLocation(49, 10))
     tiles.placeOnTile(Dash_Orb, tiles.getTileLocation(0, 6))
     Player_1 = sprites.create(img`
@@ -336,7 +337,7 @@ if (Screen == 2) {
     Player_1.ay = 550
     scene.cameraFollowSprite(Player_1)
     tiles.placeOnTile(Player_1, tiles.getTileLocation(0, 16))
-    SpawnEnemies()
+    // SpawnEnemies()
     story.printText("\"Level 1 - Start\"", 80, 200)
     Cutscene = false
     controller.moveSprite(Player_1, 75, 0)
@@ -459,7 +460,8 @@ game.onUpdate(function () {
     }
 })
 game.onUpdate(function () {
-    if (stompunlocked == true) {
+    let stompunlocked = 0
+    if (stompunlocked) {
         if (Cutscene == false) {
             if (controller.down.isPressed() == true && Player_1.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
                 Player_1.setImage(assets.image`Downward Strike Sprite Image`)

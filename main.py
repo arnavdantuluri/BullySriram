@@ -77,11 +77,11 @@ def on_on_overlap3(sprite3, otherSprite2):
             Portal open
         """),
         50,
-        True)
+        False)
     
     def on_after3():
         game.over(True)
-    timer.after(300, on_after3)
+    timer.after(350, on_after3)
     
 sprites.on_overlap(SpriteKind.player, SpriteKind.End_Portal, on_on_overlap3)
 
@@ -388,6 +388,7 @@ current_weapon = ""
 weapons_list: List[str] = []
 weapons_list = ["fist", "sword", "rapier", "broadsword", "excaliber"]
 current_weapon = weapons_list[1]
+stompunlocked = False
 Reload_Time = 1000
 Cutscene = True
 Screen = 1
@@ -441,7 +442,7 @@ if Screen == 2:
     Player_1.ay = 550
     scene.camera_follow_sprite(Player_1)
     tiles.place_on_tile(Player_1, tiles.get_tile_location(0, 16))
-    SpawnEnemies()
+    #SpawnEnemies()
     story.print_text("\"Level 1 - Start\"", 80, 200)
     Cutscene = False
     controller.move_sprite(Player_1, 75, 0)
@@ -561,18 +562,19 @@ game.on_update(on_on_update2)
 
 def on_on_update3():
     global downdash, dashing
-    if Cutscene == False:
-        if controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
-            assets.tile("""
-                transparency16
-            """)):
-            Player_1.set_image(assets.image("""
-                Downward Strike Sprite Image
-            """))
-            controller.move_sprite(Player_1, 0, 0)
-            downdash = True
-            dashing = True
-            Player_1.set_velocity(0, 400)
+    if stompunlocked == True:
+        if Cutscene == False:
+            if controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
+                assets.tile("""
+                    transparency16
+                """)):
+                Player_1.set_image(assets.image("""
+                    Downward Strike Sprite Image
+                """))
+                controller.move_sprite(Player_1, 0, 0)
+                downdash = True
+                dashing = True
+                Player_1.set_velocity(0, 400)
 game.on_update(on_on_update3)
 
 def on_on_update4():

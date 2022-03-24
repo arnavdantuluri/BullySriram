@@ -337,7 +337,7 @@ if (Screen == 2) {
     Player_1.ay = 550
     scene.cameraFollowSprite(Player_1)
     tiles.placeOnTile(Player_1, tiles.getTileLocation(0, 16))
-    // SpawnEnemies()
+    SpawnEnemies()
     story.printText("\"Level 1 - Start\"", 80, 200)
     Cutscene = false
     controller.moveSprite(Player_1, 75, 0)
@@ -487,19 +487,50 @@ game.onUpdate(function () {
                     false
                     )
                     timer.after(300, function () {
-                        animation.runImageAnimation(
-                        Player_1,
-                        assets.animation`Run forward animation`,
-                        75,
-                        true
-                        )
+                        if (playerstill != true) {
+                            if (lastdirection == true) {
+                                animation.runImageAnimation(
+                                Player_1,
+                                assets.animation`Run forward animation`,
+                                75,
+                                true
+                                )
+                            } else {
+                                animation.runImageAnimation(
+                                Player_1,
+                                assets.animation`Run Backward animation`,
+                                75,
+                                true
+                                )
+                            }
+                        } else {
+                            if (lastdirection == true) {
+                                Player_1.setImage(img`
+                                    . . . . . . f f f f f f . . . . 
+                                    . . . . f f e e e e f 2 f . . . 
+                                    . . . f f e e e e f 2 2 2 f . . 
+                                    . . . f e e e f f e e e e f . . 
+                                    . . . f f f f e e 2 2 2 2 e f . 
+                                    . . . f e 2 2 2 f f f f e 2 f . 
+                                    . . f f f f f f f e e e f f f . 
+                                    . . f f e 4 4 e b f 4 4 e e f . 
+                                    . . f e e 4 d 4 1 f d d e f . . 
+                                    . . . f e e e 4 d d d d f . . . 
+                                    . . . . f f e e 4 4 4 e f . . . 
+                                    . . . . . 4 d d e 2 2 2 f . . . 
+                                    . . . . . e d d e 2 2 2 f . . . 
+                                    . . . . . f e e f 4 5 5 f . . . 
+                                    . . . . . . f f f f f f . . . . 
+                                    . . . . . . . f f f . . . . . . 
+                                    `)
+                            } else {
+                                Player_1.setImage(assets.image`Player facing backward`)
+                            }
+                        }
                         Cutscene = false
-                    })
-                    attack()
-                    timer.after(1000, function () {
                         attacking = false
                     })
-                    controller.moveSprite(Player_1, 75, 0)
+                    attack()
                 } else {
                     Cutscene = true
                     animation.runImageAnimation(
@@ -509,18 +540,50 @@ game.onUpdate(function () {
                     false
                     )
                     timer.after(300, function () {
-                        animation.runImageAnimation(
-                        Player_1,
-                        assets.animation`Run Backward animation`,
-                        75,
-                        true
-                        )
+                        if (playerstill != true) {
+                            if (lastdirection == true) {
+                                animation.runImageAnimation(
+                                Player_1,
+                                assets.animation`Run forward animation`,
+                                75,
+                                true
+                                )
+                            } else {
+                                animation.runImageAnimation(
+                                Player_1,
+                                assets.animation`Run Backward animation`,
+                                75,
+                                true
+                                )
+                            }
+                        } else {
+                            if (lastdirection == true) {
+                                Player_1.setImage(img`
+                                    . . . . . . f f f f f f . . . . 
+                                    . . . . f f e e e e f 2 f . . . 
+                                    . . . f f e e e e f 2 2 2 f . . 
+                                    . . . f e e e f f e e e e f . . 
+                                    . . . f f f f e e 2 2 2 2 e f . 
+                                    . . . f e 2 2 2 f f f f e 2 f . 
+                                    . . f f f f f f f e e e f f f . 
+                                    . . f f e 4 4 e b f 4 4 e e f . 
+                                    . . f e e 4 d 4 1 f d d e f . . 
+                                    . . . f e e e 4 d d d d f . . . 
+                                    . . . . f f e e 4 4 4 e f . . . 
+                                    . . . . . 4 d d e 2 2 2 f . . . 
+                                    . . . . . e d d e 2 2 2 f . . . 
+                                    . . . . . f e e f 4 5 5 f . . . 
+                                    . . . . . . f f f f f f . . . . 
+                                    . . . . . . . f f f . . . . . . 
+                                    `)
+                            } else {
+                                Player_1.setImage(assets.image`Player facing backward`)
+                            }
+                        }
                         Cutscene = false
-                    })
-                    attack()
-                    timer.after(1000, function () {
                         attacking = false
                     })
+                    attack()
                 }
             })
         }

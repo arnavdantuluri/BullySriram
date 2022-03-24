@@ -71,20 +71,6 @@ def on_on_overlap2(sprite2, otherSprite):
     otherSprite.destroy()
 sprites.on_overlap(SpriteKind.player, SpriteKind.DashOrb, on_on_overlap2)
 
-def on_on_overlap3(sprite3, otherSprite2):
-    animation.run_image_animation(otherSprite2,
-        assets.animation("""
-            Portal open
-        """),
-        50,
-        False)
-    
-    def on_after3():
-        game.over(True)
-    timer.after(350, on_after3)
-    
-sprites.on_overlap(SpriteKind.player, SpriteKind.End_Portal, on_on_overlap3)
-
 def SpawnEnemies():
     global Sriram
     for value in tiles.get_tiles_by_type(assets.tile("""
@@ -120,35 +106,35 @@ def GainDash():
     story.print_text("\"Dash Gained\"", 80, 60)
     story.print_text("\"Press SPACE to dash\"", 80, 60)
     
-    def on_after4():
+    def on_after3():
         global Cutscene
         Cutscene = False
         controller.move_sprite(Player_1, 75, 0)
         Player_1.vx = 0
-    timer.after(400, on_after4)
+    timer.after(400, on_after3)
     
     Dash_Unlocked = True
 
-def on_on_overlap4(sprite32, otherSprite22):
+def on_on_overlap3(sprite32, otherSprite22):
     global enemywamoushindeiru
     enemywamoushindeiru = True
     sprite32.destroy()
     
-    def on_after5():
+    def on_after4():
         tiles.set_tile_at(otherSprite22.tilemap_location(),
             assets.tile("""
                 Tombstone
             """))
-    timer.after(50, on_after5)
+    timer.after(50, on_after4)
     
     otherSprite22.destroy()
     
-    def on_after6():
+    def on_after5():
         global enemywamoushindeiru
         enemywamoushindeiru = False
-    timer.after(500, on_after6)
+    timer.after(500, on_after5)
     
-sprites.on_overlap(SpriteKind.projectile, SpriteKind.enemy, on_on_overlap4)
+sprites.on_overlap(SpriteKind.projectile, SpriteKind.enemy, on_on_overlap3)
 
 def dash():
     global dashing
@@ -156,36 +142,36 @@ def dash():
         controller.move_sprite(Player_1, 0, 0)
         Player_1.vx = 200
         
+        def on_after6():
+            Player_1.vx = 200
+        timer.after(70, on_after6)
+        
+        
         def on_after7():
             Player_1.vx = 200
-        timer.after(70, on_after7)
+        timer.after(140, on_after7)
         
         
         def on_after8():
             Player_1.vx = 200
-        timer.after(140, on_after8)
+        timer.after(210, on_after8)
         
         
         def on_after9():
             Player_1.vx = 200
-        timer.after(210, on_after9)
+        timer.after(280, on_after9)
         
         
         def on_after10():
             Player_1.vx = 200
-        timer.after(280, on_after10)
-        
-        
-        def on_after11():
-            Player_1.vx = 200
-        timer.after(350, on_after11)
+        timer.after(350, on_after10)
         
         dashing = True
         Player_1.set_image(assets.image("""
             Dash right
         """))
         
-        def on_after12():
+        def on_after11():
             global dashing
             controller.move_sprite(Player_1, 75, 0)
             Player_1.vx = 0
@@ -208,39 +194,39 @@ def dash():
                                 . . . . . . . f f f . . . . . .
             """))
             dashing = False
-        timer.after(350, on_after12)
+        timer.after(350, on_after11)
         
     else:
         controller.move_sprite(Player_1, 0, 0)
         Player_1.vx = -200
         
+        def on_after12():
+            Player_1.vx = -200
+        timer.after(70, on_after12)
+        
+        
         def on_after13():
             Player_1.vx = -200
-        timer.after(70, on_after13)
+        timer.after(140, on_after13)
         
         
         def on_after14():
             Player_1.vx = -200
-        timer.after(140, on_after14)
+        timer.after(210, on_after14)
         
         
         def on_after15():
             Player_1.vx = -200
-        timer.after(210, on_after15)
+        timer.after(280, on_after15)
         
         
         def on_after16():
             Player_1.vx = -200
-        timer.after(280, on_after16)
-        
-        
-        def on_after17():
-            Player_1.vx = -200
-        timer.after(350, on_after17)
+        timer.after(350, on_after16)
         
         dashing = True
         
-        def on_after18():
+        def on_after17():
             global dashing
             controller.move_sprite(Player_1, 75, 0)
             Player_1.vx = 0
@@ -248,39 +234,39 @@ def dash():
                 Player facing backward
             """))
             dashing = False
-        timer.after(350, on_after18)
+        timer.after(350, on_after17)
         
         Player_1.set_image(assets.image("""
             Dashleft
         """))
 
-def on_on_overlap5(sprite5, otherSprite3):
+def on_on_overlap4(sprite5, otherSprite3):
     global Playerwamoushindeiru, enemywamoushindeiru
     if dashing == False:
         Playerwamoushindeiru = True
         
-        def on_after19():
+        def on_after18():
             game.over(False)
-        timer.after(15, on_after19)
+        timer.after(15, on_after18)
         
     else:
         enemywamoushindeiru = True
         otherSprite3.destroy()
         
-        def on_after20():
+        def on_after19():
             tiles.set_tile_at(otherSprite3.tilemap_location(),
                 assets.tile("""
                     Tombstone
                 """))
-        timer.after(50, on_after20)
+        timer.after(50, on_after19)
         
         
-        def on_after21():
+        def on_after20():
             global enemywamoushindeiru
             enemywamoushindeiru = False
-        timer.after(500, on_after21)
+        timer.after(500, on_after20)
         
-sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap5)
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap4)
 
 def attack():
     global shot
@@ -289,9 +275,9 @@ def attack():
             Common Shot
         """), SpriteKind.projectile)
         
-        def on_after22():
+        def on_after21():
             shot.destroy()
-        timer.after(100, on_after22)
+        timer.after(100, on_after21)
         
         if lastdirection == True:
             shot.set_velocity(500, 0)
@@ -303,9 +289,9 @@ def attack():
             """),
             SpriteKind.projectile)
         
-        def on_after23():
+        def on_after22():
             shot.destroy()
-        timer.after(150, on_after23)
+        timer.after(150, on_after22)
         
         if lastdirection == True:
             shot.set_velocity(500, 0)
@@ -317,7 +303,7 @@ def attack():
     shot.set_flag(SpriteFlag.AUTO_DESTROY, True)
     shot.set_position(Player_1.x, Player_1.y)
 
-def on_on_overlap6(sprite34, otherSprite24):
+def on_on_overlap5(sprite34, otherSprite24):
     global Cutscene, current_weapon, Reload_Time
     animation.run_image_animation(Chest_sprite,
         assets.animation("""
@@ -341,7 +327,7 @@ def on_on_overlap6(sprite34, otherSprite24):
             Opened Chest
         """))
     Chest_sprite.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.Chest, on_on_overlap6)
+sprites.on_overlap(SpriteKind.player, SpriteKind.Chest, on_on_overlap5)
 
 def EnemyShot(Enemy_shooter: Sprite):
     global shot
@@ -366,6 +352,23 @@ def EnemyShot(Enemy_shooter: Sprite):
                         """))
                     shot.set_flag(SpriteFlag.DESTROY_ON_WALL, True)
                     shot.set_flag(SpriteFlag.AUTO_DESTROY, True)
+
+def on_on_overlap6(sprite3, otherSprite2):
+    animation.run_image_animation(otherSprite2,
+        assets.animation("""
+            Portal open
+        """),
+        75,
+        False)
+    pause(400)
+    game.over(True)
+    
+    def on_after23():
+        pass
+    timer.after(350, on_after23)
+    
+sprites.on_overlap(SpriteKind.player, SpriteKind.End_Portal, on_on_overlap6)
+
 downdash = False
 attacking = False
 playerstill = False
@@ -388,7 +391,6 @@ current_weapon = ""
 weapons_list: List[str] = []
 weapons_list = ["fist", "sword", "rapier", "broadsword", "excaliber"]
 current_weapon = weapons_list[1]
-stompunlocked = False
 Reload_Time = 1000
 Cutscene = True
 Screen = 1
@@ -442,7 +444,7 @@ if Screen == 2:
     Player_1.ay = 550
     scene.camera_follow_sprite(Player_1)
     tiles.place_on_tile(Player_1, tiles.get_tile_location(0, 16))
-    #SpawnEnemies()
+    SpawnEnemies()
     story.print_text("\"Level 1 - Start\"", 80, 200)
     Cutscene = False
     controller.move_sprite(Player_1, 75, 0)
@@ -562,7 +564,8 @@ game.on_update(on_on_update2)
 
 def on_on_update3():
     global downdash, dashing
-    if stompunlocked == True:
+    stompunlocked = 0
+    if stompunlocked:
         if Cutscene == False:
             if controller.down.is_pressed() == True and Player_1.tile_kind_at(TileDirection.BOTTOM,
                 assets.tile("""
